@@ -1,0 +1,39 @@
+<!doctype html>
+<title>matisse :: a generative art gallery</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="/css/paper.min.css">
+<link rel="stylesheet" href="/css/main.css">
+<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
+
+<main>
+    <header>
+        <h1>matisse :: a generative art gallery</h1>
+        <p class="links">
+            made by
+            <a class="link" href="https://thesephist.com">@thesephist</a>,
+            using
+            <a class="link" href="https://dotink.co">Ink</a> and
+            <a class="link" href="https://thesephist.github.io/paper.css/">paper.css</a>,
+            compiled with
+            <a class="link" href="https://github.com/thesephist/september">September</a>
+        </p>
+    </header>
+    <canvas id="canvas" class="paper"></canvas>
+    <div class="buttons">
+        <button class="movable accent paper">
+            Generate
+            <span class="system">&#x1f5d8;</span>
+        </button>
+    </div>
+</main>
+
+
+<!-- JS required to bootstrap the app -->
+<script src="/js/bootstrap.js"></script>
+
+<!-- runtime libraries for apps compiled with September -->
+<script src="/vendor/ink.js"></script>
+<script src="/vendor/std.js"></script>
+
+<!-- Ink code compiled with September -->
+<script src="/ink/000.js"></script>

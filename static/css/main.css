@@ -1,0 +1,68 @@
+html,
+body {
+	--paper-background: #fff;
+	--paper-foreground: #111;
+	--paper-accent: #111;
+	--ff: 'Cutive Mono', monospace;
+
+	font-family: var(--ff);
+	background: #f9f9f9;
+	font-size: 20px;
+	margin: 0;
+	padding: 0;
+	box-shadow: inset 0 0 25vw rgba(0, 0, 0, .05)
+}
+
+.system {
+	font-family: system-ui sans-serif !important;
+}
+
+main {
+	width: calc(100% - 24px);
+	margin: 0 auto;
+	max-width: 800px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+h1 {
+	font-size: 1em;
+}
+
+p.links {
+	color: #777;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+a.link {
+	cursor: pointer;
+	color: #777;
+}
+
+a:hover {
+	opacity: .7;
+}
+
+canvas#canvas {
+	width: 100%;
+	padding: 0;
+	margin: 1em 0 2em 0;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.buttons button {
+	font-size: 1em;
+	font-family: var(--ff);
+}
