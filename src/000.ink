@@ -56,7 +56,7 @@ rainbowDiagonals := () => (
 )
 
 flowerbed := () => (
-	Center := [500, 500]
+	Center := [Width / 2, Height / 2]
 	PuffLen := 36
 	MaxDist := distance(Center, [40, 40])
 	each(range(0, randRange(6, 100), 1), () => (
@@ -102,7 +102,7 @@ maze := () => (
 )
 
 radar := () => (
-	Center := [500, 500]
+	Center := [Width / 2, Height / 2]
 	MaxRadius := 710 ` close to diagonal length `
 	each(range(10, MaxRadius, 10), r => (
 		setLineWidth(floor((1 - r / MaxRadius) * 12))
@@ -116,13 +116,40 @@ radar := () => (
 )
 
 fans := () => (
-	Center := [500, 500]
+	Center := [Width / 2, Height / 2]
 	MaxRadius := 710 ` close to diagonal length `
 	setLineWidth(6)
 	each(range(10, MaxRadius, 6), r => (
 		setStroke(rgba(rand(), rand(), rand(), r / MaxRadius))
 		start := randRange(0, Tau)
 		strokeArc(Center.0, Center.1, r, start, start + randRange(0, Pi * 1.5))
+	))
+)
+
+grid := () => (
+	Center := [Width / 2, Height / 2]
+	CellSize := 50
+	HalfCell := CellSize / 2
+	MaxRadius := 20
+
+	each(range(0, Width, CellSize), x => (
+		each(range(0, Height, CellSize), y => rand() > 0.75 :: {
+			true -> (
+				center := [x + HalfCell, y + HalfCell]
+
+				setFill(Black)
+				setLineWidth(2)
+				setStroke(Black)
+
+				r := randRange(0, MaxRadius)
+				strokeCircle(center.0, center.1, r)
+				fillCircle(center.0, center.1, randRange(2, max([r - 2, 2])))
+
+				setLineWidth(1)
+				setStroke(randColorAlpha())
+				drawLine(Center, center)
+			)
+		})
 	))
 )
 
@@ -134,6 +161,7 @@ options := [
 	maze
 	radar
 	fans
+	grid
 ]
 
 ` pick a random style and generate `

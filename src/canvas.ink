@@ -23,6 +23,7 @@ distance := (a, b) => sqrt(distanceSq(a, b))
 rgb := (r, g, b) => f('rgb({{0}}, {{1}}, {{2}})', [r * 255.99, g * 255.99, b * 255.99])
 rgba := (r, g, b, a) => f('rgb({{0}}, {{1}}, {{2}}, {{3}})'
 	[r * 255.99, g * 255.99, b * 255.99, a])
+Black := rgb(0, 0, 0)
 coinflip := () => rand() > 0.5
 randCenterBias := (min, max, resolution) => (
 	` random center-biased distribution `
@@ -83,14 +84,14 @@ drawPaths := points => reduce(slice(points, 1, len(points)), (last, next) => (
 	drawLine(last, next)
 	next
 ), points.0)
-strokeArc := (x, y, z, start, end) => (
+strokeArc := (x, y, r, start, end) => (
 	beginPath()
-	arc(x, y, z, start, end)
+	arc(x, y, r, start, end)
 	stroke()
 )
 fillArc := (x, y, r, start, end) => (
 	beginPath()
-	arc(x, y, z, start, end)
+	arc(x, y, r, start, end)
 	fill()
 )
 strokeCircle := (x, y, r) => strokeArc(x, y, r, 0, Tau)
