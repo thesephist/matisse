@@ -55,10 +55,32 @@ rainbowDiagonals := () => (
 	), randomPoints.0)
 )
 
+flowerbed := () => (
+	Center := [500, 500]
+	PuffLen := 36
+	MaxDist := distance(Center, [40, 40])
+	each(range(0, randRange(6, 100), 1), () => (
+		target := [randRange(50, 950), randRange(50, 950)]
+		dist := distance(Center, target)
+		setLineWidth(2)
+		setStroke(rgba(0, 0, 0, 1 - dist / MaxDist))
+		drawLine(Center, target)
+
+		` spikes `
+		setLineWidth(5)
+		setStroke(rgba(0.99, 0.2, 0.2, 1 - dist / MaxDist))
+		each(range(0, 5, 1), () => drawLine(target, [
+			target.0 + randRange(0, PuffLen) - PuffLen / 2
+			target.1 + randRange(0, PuffLen) - PuffLen / 2
+		]))
+	))
+)
+
 options := [
 	rectGrid
 	diagonals
 	rainbowDiagonals
+	flowerbed
 ]
 
 ` pick a random style and generate `

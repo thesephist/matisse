@@ -15,6 +15,9 @@ Canvas.width := Width
 Canvas.height := Height
 
 ` utilities `
+sqrt := x => pow(x, 0.5)
+distanceSq := (a, b) => pow(a.0 - b.0, 2) + pow(a.1 - b.1, 2)
+distance := (a, b) => sqrt(distanceSq(a, b))
 rgb := (r, g, b) => f('rgb({{0}}, {{1}}, {{2}})', [r * 255.99, g * 255.99, b * 255.99])
 rgba := (r, g, b, a) => f('rgb({{0}}, {{1}}, {{2}}, {{3}})'
 	[r * 255.99, g * 255.99, b * 255.99, a])
