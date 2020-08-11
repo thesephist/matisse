@@ -1,8 +1,8 @@
 rectGrid := () => (
 	setFill('transparent')
 
-	each(range(0, 1000, 50), x => (
-		each(range(0, 1000, 50), y => (
+	each(range(0, Width, 50), x => (
+		each(range(0, Height, 50), y => (
 			` grey rects `
 			setLineWidth(randRange(1, 6))
 			setStroke(randColorGreyscale())
@@ -31,8 +31,8 @@ diagonals := () => (
 		0.3
 	))
 	randomPoints := map(range(0, 1000, 1), () => [
-		randCenterBias(0, 1000, 6)
-		randCenterBias(0, 1000, 6)
+		randCenterBias(0, Width, 6)
+		randCenterBias(0, Height, 6)
 	])
 	drawPaths(randomPoints)
 )
@@ -40,8 +40,8 @@ diagonals := () => (
 rainbowDiagonals := () => (
 	setLineWidth(2)
 	randomPoints := map(range(0, 1000, 1), () => [
-		randCenterBias(0, 1000, 5)
-		randCenterBias(0, 1000, 5)
+		randCenterBias(0, Width, 5)
+		randCenterBias(0, Height, 5)
 	])
 	reduce(slice(randomPoints, 1, len(randomPoints)), (last, next) => (
 		setStroke(rgba(
@@ -60,7 +60,7 @@ flowerbed := () => (
 	PuffLen := 36
 	MaxDist := distance(Center, [40, 40])
 	each(range(0, randRange(6, 100), 1), () => (
-		target := [randRange(50, 950), randRange(50, 950)]
+		target := [randRange(0, Width), randRange(0, Height)]
 		dist := distance(Center, target)
 		setLineWidth(2)
 		setStroke(rgba(0, 0, 0, 1 - dist / MaxDist))
@@ -76,11 +76,37 @@ flowerbed := () => (
 	))
 )
 
+maze := () => (
+	CellSize := 50
+	jitter := (coinflip() :: {
+		true -> () => 2
+		_ -> () => randInt(1, 4)
+	})
+	setStroke(rgb(0.1, 0.1, 0.1))
+	each(range(0, Width, CellSize), x => (
+		each(range(0, Height, CellSize), y => (
+			coinflip() :: {
+				true -> (
+					setLineWidth(1)
+					drawLine([x, y], [x + CellSize, y + CellSize / jitter()])
+				)
+			}
+			coinflip() :: {
+				true -> (
+					setLineWidth(5)
+					drawLine([x + CellSize, y], [x, y + CellSize])
+				)
+			}
+		))
+	))
+)
+
 options := [
 	rectGrid
 	diagonals
 	rainbowDiagonals
 	flowerbed
+	maze
 ]
 
 ` pick a random style and generate `

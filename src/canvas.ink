@@ -21,6 +21,7 @@ distance := (a, b) => sqrt(distanceSq(a, b))
 rgb := (r, g, b) => f('rgb({{0}}, {{1}}, {{2}})', [r * 255.99, g * 255.99, b * 255.99])
 rgba := (r, g, b, a) => f('rgb({{0}}, {{1}}, {{2}}, {{3}})'
 	[r * 255.99, g * 255.99, b * 255.99, a])
+coinflip := () => rand() > 0.5
 randCenterBias := (min, max, resolution) => (
 	` random center-biased distribution `
 	parts := map(
@@ -49,9 +50,15 @@ setLineWidth := width => Ctx.lineWidth := width
 setStroke := color => Ctx.strokeStyle := color
 
 ` canvas draw functions `
+fill := bind(Ctx, 'fill')
 fillRect := bind(Ctx, 'fillRect')
 strokeRect := bind(Ctx, 'strokeRect')
 clearRect := bind(Ctx, 'clearRect')
+strokeArc := bind(Ctx, 'arc')
+fillArc := (x, y, r, start, end) => (
+	strokeArc(x, y, r, start, end)
+	fill()
+)
 
 ` drawing lines `
 beginPath := bind(Ctx, 'beginPath')
