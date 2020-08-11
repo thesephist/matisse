@@ -153,6 +153,43 @@ grid := () => (
 	))
 )
 
+dots := () => (
+	Center := [Width / 2, Height / 2]
+	CellSize := 50
+	HalfCell := CellSize / 2
+	MaxRadius := 20
+
+	each(range(0, Width, CellSize), x => (
+		each(range(0, Height, CellSize), y => (
+			center := [x + HalfCell, y + HalfCell]
+
+			r := randRange(0, MaxRadius)
+			setLineWidth(1)
+			strokeCircle(center.0, center.1, r)
+			fillCircle(center.0, center.1, randRange(2, max([r - 2, 2])))
+		))
+	))
+)
+
+waves := () => (
+	Center := [Width / 2, Height / 2]
+	CellSize := 50
+	HalfCell := CellSize / 2
+	MaxRadius := 20
+
+	each(range(0, Width, CellSize), x => (
+		each(range(0, Height, CellSize), y => (
+			center := [x + HalfCell, y + HalfCell]
+
+			r := 19 * x / Width + 1
+			arcl := (y + CellSize) / Height * Tau
+			setLineWidth(4)
+			start := randRange(0, Tau)
+			strokeArc(center.0, center.1, r, start, start + arcl)
+		))
+	))
+)
+
 options := [
 	rectGrid
 	diagonals
@@ -162,6 +199,8 @@ options := [
 	radar
 	fans
 	grid
+	dots
+	waves
 ]
 
 ` pick a random style and generate `
