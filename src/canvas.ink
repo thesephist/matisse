@@ -1,5 +1,7 @@
 ` stdlib is implied `
 f := format
+Pi := 3.141592654
+Tau := 2 * Pi
 
 ` richer logging in the browser `
 jslog := x => (console.log)(x)
@@ -44,7 +46,7 @@ randColorGreyscaleAlpha := () => (
 )
 
 ` canvas state functions `
-clear := () => clearRect(0, 0, 1000, 1000)
+clear := () => clearRect(0, 0, Width, Height)
 setFill := color => Ctx.fillStyle := color
 setLineWidth := width => Ctx.lineWidth := width
 setStroke := color => Ctx.strokeStyle := color
@@ -54,11 +56,7 @@ fill := bind(Ctx, 'fill')
 fillRect := bind(Ctx, 'fillRect')
 strokeRect := bind(Ctx, 'strokeRect')
 clearRect := bind(Ctx, 'clearRect')
-strokeArc := bind(Ctx, 'arc')
-fillArc := (x, y, r, start, end) => (
-	strokeArc(x, y, r, start, end)
-	fill()
-)
+arc := bind(Ctx, 'arc')
 
 ` drawing lines `
 beginPath := bind(Ctx, 'beginPath')
@@ -85,4 +83,16 @@ drawPaths := points => reduce(slice(points, 1, len(points)), (last, next) => (
 	drawLine(last, next)
 	next
 ), points.0)
+strokeArc := (x, y, z, start, end) => (
+	beginPath()
+	arc(x, y, z, start, end)
+	stroke()
+)
+fillArc := (x, y, r, start, end) => (
+	beginPath()
+	arc(x, y, z, start, end)
+	fill()
+)
+strokeCircle := (x, y, r) => strokeArc(x, y, r, 0, Tau)
+fillCircle := (x, y, r) => fillArc(x, y, r, 0, Tau)
 

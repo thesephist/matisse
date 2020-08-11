@@ -101,17 +101,46 @@ maze := () => (
 	))
 )
 
+radar := () => (
+	Center := [500, 500]
+	MaxRadius := 710 ` close to diagonal length `
+	each(range(10, MaxRadius, 10), r => (
+		setLineWidth(floor((1 - r / MaxRadius) * 12))
+
+		start := randRange(0, Tau)
+		strokeArc(Center.0, Center.1, r, start, start + randRange(0, Pi * 0.7))
+
+		start := randRange(0, Tau)
+		strokeArc(Center.0, Center.1, r, start, start + randRange(0, Pi * 0.7))
+	))
+)
+
+fans := () => (
+	Center := [500, 500]
+	MaxRadius := 710 ` close to diagonal length `
+	setLineWidth(6)
+	each(range(10, MaxRadius, 6), r => (
+		setStroke(rgba(rand(), rand(), rand(), r / MaxRadius))
+		start := randRange(0, Tau)
+		strokeArc(Center.0, Center.1, r, start, start + randRange(0, Pi * 1.5))
+	))
+)
+
 options := [
 	rectGrid
 	diagonals
 	rainbowDiagonals
 	flowerbed
 	maze
+	radar
+	fans
 ]
 
 ` pick a random style and generate `
 generate := () => (
 	clearRect(0, 0, Width, Height)
+	setFill(rgb(0, 0, 0))
+	setStroke(rgb(0, 0, 0))
 	(options.randInt(0, len(options)))()
 )
 generate()
