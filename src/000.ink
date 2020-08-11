@@ -268,8 +268,12 @@ options := [
 ` pick a random style and generate `
 generate := () => (
 	clearRect(0, 0, Width, Height)
-	setFill(rgb(0, 0, 0))
-	setStroke(rgb(0, 0, 0))
+
+	setFill(White)
+	fillRect(0, 0, Width, Height)
+
+	setFill(Black)
+	setStroke(Black)
 	setLineWidth(1)
 	(options.randInt(0, len(options)))()
 )

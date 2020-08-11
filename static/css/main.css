@@ -35,7 +35,7 @@ h1 {
 
 p.links {
 	color: #777;
-	width: 80%;
+    max-width: 610px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -49,10 +49,16 @@ a:hover {
 	opacity: .7;
 }
 
-canvas#canvas {
+#canvas-wrapper {
 	width: 100%;
-	padding: 8%;
 	margin: 1em 0 2em 0;
+    max-height: calc(100vh - 250px);
+    max-width: calc(100vh - 250px);
+}
+
+#canvas {
+    width: 100%;
+	padding: 8%;
 }
 
 .buttons {
@@ -60,9 +66,12 @@ canvas#canvas {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+    flex-wrap: wrap;
 }
 
 .buttons button {
 	font-size: 1em;
 	font-family: var(--ff);
+    margin: .4em .6em;
+    white-space: nowrap;
 }

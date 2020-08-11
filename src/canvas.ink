@@ -48,7 +48,6 @@ randColorGreyscaleAlpha := () => (
 )
 
 ` canvas state functions `
-clear := () => clearRect(0, 0, Width, Height)
 setFill := color => Ctx.fillStyle := color
 setLineWidth := width => Ctx.lineWidth := width
 setStroke := color => Ctx.strokeStyle := color
@@ -97,4 +96,3 @@ fillArc := (x, y, r, start, end) => (
 )
 strokeCircle := (x, y, r) => strokeArc(x, y, r, 0, Tau)
 fillCircle := (x, y, r) => fillArc(x, y, r, 0, Tau)
-
