@@ -18,7 +18,16 @@ Canvas.height := Height
 rgb := (r, g, b) => f('rgb({{0}}, {{1}}, {{2}})', [r * 255.99, g * 255.99, b * 255.99])
 rgba := (r, g, b, a) => f('rgb({{0}}, {{1}}, {{2}}, {{3}})'
 	[r * 255.99, g * 255.99, b * 255.99, a])
-randInt := (min, max) => min + floor(rand() * max)
+randCenterBias := (min, max, resolution) => (
+	` random center-biased distribution `
+	parts := map(
+		range(0, resolution, 1)
+		() => rand() / resolution
+	)
+	min + reduce(parts, (a, b) => a + b, 0) * (max - min)
+)
+randRange := (min, max) => min + rand() * (max - min)
+randInt := (min, max) => floor(randRange(min, max))
 randColor := () => rgb(rand(), rand(), rand())
 randColorAlpha := () => rgba(rand(), rand(), rand(), rand())
 randColorGreyscale := () => (
@@ -30,11 +39,40 @@ randColorGreyscaleAlpha := () => (
 	rgba(r, r, r, rand())
 )
 
-` canvas functions `
+` canvas state functions `
 clear := () => clearRect(0, 0, 1000, 1000)
 setFill := color => Ctx.fillStyle := color
+setLineWidth := width => Ctx.lineWidth := width
 setStroke := color => Ctx.strokeStyle := color
+
+` canvas draw functions `
 fillRect := bind(Ctx, 'fillRect')
 strokeRect := bind(Ctx, 'strokeRect')
 clearRect := bind(Ctx, 'clearRect')
+
+` drawing lines `
+beginPath := bind(Ctx, 'beginPath')
+moveTo := bind(Ctx, 'moveTo')
+lineTo := bind(Ctx, 'lineTo')
+stroke := bind(Ctx, 'stroke')
+drawLine := (start, end) => (
+	beginPath()
+	moveTo(start.0, start.1)
+	lineTo(end.0, end.1)
+	stroke()
+)
+drawSinglePath := points => (
+	beginPath()
+	start := points.0
+	moveTo(start.0, start.1)
+	each(
+		slice(points, 1, len(points))
+		next => lineTo(next.0, next.1)
+	)
+	stroke()
+)
+drawPaths := points => reduce(slice(points, 1, len(points)), (last, next) => (
+	drawLine(last, next)
+	next
+), points.0)
 
