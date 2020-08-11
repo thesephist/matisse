@@ -12,7 +12,7 @@ I think that's kind of cool 🙌
 
 ## Development and adding new pieces
 
-Developing Matisse pieces are easiest if you have the following tools installed.
+Developing Matisse pieces is easiest if you have the following tools installed.
 
 - GNU `make`
 - An Ink interpreter, like [thesephist/ink](https://github.com/thesephist/ink)
