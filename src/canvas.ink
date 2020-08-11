@@ -24,6 +24,7 @@ rgb := (r, g, b) => f('rgb({{0}}, {{1}}, {{2}})', [r * 255.99, g * 255.99, b * 2
 rgba := (r, g, b, a) => f('rgb({{0}}, {{1}}, {{2}}, {{3}})'
 	[r * 255.99, g * 255.99, b * 255.99, a])
 Black := rgb(0, 0, 0)
+White := rgb(0.99, 0.99, 0.99)
 coinflip := () => rand() > 0.5
 randCenterBias := (min, max, resolution) => (
 	` random center-biased distribution `
@@ -53,17 +54,17 @@ setLineWidth := width => Ctx.lineWidth := width
 setStroke := color => Ctx.strokeStyle := color
 
 ` canvas draw functions `
-fill := bind(Ctx, 'fill')
 fillRect := bind(Ctx, 'fillRect')
 strokeRect := bind(Ctx, 'strokeRect')
 clearRect := bind(Ctx, 'clearRect')
-arc := bind(Ctx, 'arc')
-
-` drawing lines `
 beginPath := bind(Ctx, 'beginPath')
 moveTo := bind(Ctx, 'moveTo')
 lineTo := bind(Ctx, 'lineTo')
+arc := bind(Ctx, 'arc')
 stroke := bind(Ctx, 'stroke')
+fill := bind(Ctx, 'fill')
+
+` drawing lines `
 drawLine := (start, end) => (
 	beginPath()
 	moveTo(start.0, start.1)

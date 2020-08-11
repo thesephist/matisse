@@ -190,6 +190,36 @@ waves := () => (
 	))
 )
 
+planets := () => (
+	Center := [Width / 2, Height / 2]
+	MaxRadius := 710 ` close to diagonal length `
+	setLineWidth(1)
+	fillCircle(Center.0, Center.1, 40)
+	each(range(80, MaxRadius, 40), r => (
+		start := randRange(0, Tau)
+		end := start + randRange(Pi, Tau)
+		strokeArc(Center.0, Center.1, r, start, end)
+
+		` planet `
+		theta := randRange(start, end)
+		pos := [
+			Center.0 + r * cos(theta)
+			Center.1 + r * sin(theta)
+		]
+		r := randRange(6, 14)
+		setFill(White)
+		coinflip() :: {
+			true -> (
+				fillCircle(pos.0, pos.1, r + 16)
+				strokeCircle(pos.0, pos.1, r + 8)
+			)
+			false -> fillCircle(pos.0, pos.1, r + 8)
+		}
+		setFill(Black)
+		fillCircle(pos.0, pos.1, r)
+	))
+)
+
 options := [
 	rectGrid
 	diagonals
@@ -201,6 +231,7 @@ options := [
 	grid
 	dots
 	waves
+	planets
 ]
 
 ` pick a random style and generate `
