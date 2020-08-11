@@ -220,6 +220,36 @@ planets := () => (
 	))
 )
 
+pathfinder := () => (
+	Center := [Width / 2, Height / 2]
+	Step := 100
+	clampOne := (x, min, max) => clamp(x, x, min, max).start
+	reduce(range(0, 700, 1), (last, n) => (
+		opacity := 1 - n / 500
+		setStroke(rgba(0, 0, 0, opacity))
+		next := (n % 2 :: {
+			1 -> [
+				last.0
+				clampOne(last.1 + randRange(~Step, Step), 0, 1000)
+			]
+			_ -> [
+				clampOne(last.0 + randRange(~Step, Step), 0, 1000)
+				last.1
+			]
+		})
+		drawLine(last, next)
+		coinflip() :: {
+			true -> (
+				setFill(White)
+				fillCircle(last.0, last.1, 10)
+				setFill(rgba(0.8, 0.1, 0.1, opacity))
+				fillCircle(last.0, last.1, 5)
+			)
+		}
+		next
+	), Center)
+)
+
 options := [
 	rectGrid
 	diagonals
@@ -232,6 +262,7 @@ options := [
 	dots
 	waves
 	planets
+	pathfinder
 ]
 
 ` pick a random style and generate `
@@ -239,6 +270,7 @@ generate := () => (
 	clearRect(0, 0, Width, Height)
 	setFill(rgb(0, 0, 0))
 	setStroke(rgb(0, 0, 0))
+	setLineWidth(1)
 	(options.randInt(0, len(options)))()
 )
 generate()
