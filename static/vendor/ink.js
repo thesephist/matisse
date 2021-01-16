@@ -348,7 +348,27 @@ const __Ink_String = s => {
 	}
 }
 
+/* TCE trampoline helpers */
+
+function __ink_resolve_trampoline(fn, ...args) {
+	let rv = fn(...args);
+	while (rv && rv.__is_ink_trampoline) {
+		rv = rv.fn(...rv.args);
+	}
+	return rv;
+}
+
+function __ink_trampoline(fn, ...args) {
+	return {
+		__is_ink_trampoline: true,
+		fn: fn,
+		args: args,
+	}
+}
+
 /* Ink -> JavaScript interop helpers */
+
+const bind = (target, fn) => target[fn].bind(target);
 
 function jsnew(Constructor, args) {
 	return new Constructor(...args);
