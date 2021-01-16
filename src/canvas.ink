@@ -1,10 +1,7 @@
 ` stdlib is implied `
 f := format
-Pi := 3.141592654
+Pi := Math.PI
 Tau := 2 * Pi
-
-` richer logging in the browser `
-jslog := x => (console.log)(x)
 
 ` constants `
 Width := 1000
@@ -24,7 +21,7 @@ rgb := (r, g, b) => f('rgb({{0}}, {{1}}, {{2}})', [r * 255.99, g * 255.99, b * 2
 rgba := (r, g, b, a) => f('rgb({{0}}, {{1}}, {{2}}, {{3}})'
 	[r * 255.99, g * 255.99, b * 255.99, a])
 Black := rgb(0, 0, 0)
-White := rgb(0.99, 0.99, 0.99)
+White := 'rgb(255, 255, 255)'
 coinflip := () => rand() > 0.5
 randCenterBias := (min, max, resolution) => (
 	` random center-biased distribution `
@@ -46,6 +43,7 @@ randColorGreyscaleAlpha := () => (
 	r := rand()
 	rgba(r, r, r, rand())
 )
+choose := list => list.floor(randRange(0, len(list)))
 
 ` canvas state functions `
 setFill := color => Ctx.fillStyle := color
@@ -62,6 +60,8 @@ lineTo := bind(Ctx, 'lineTo')
 arc := bind(Ctx, 'arc')
 stroke := bind(Ctx, 'stroke')
 fill := bind(Ctx, 'fill')
+rotate := bind(Ctx, 'rotate')
+translate := bind(Ctx, 'translate')
 
 ` drawing lines `
 drawLine := (start, end) => (
@@ -96,3 +96,8 @@ fillArc := (x, y, r, start, end) => (
 )
 strokeCircle := (x, y, r) => strokeArc(x, y, r, 0, Tau)
 fillCircle := (x, y, r) => fillArc(x, y, r, 0, Tau)
+rotateCanvas := angle => (
+	translate(Width / 2, Height / 2)
+	rotate(angle)
+	translate(~Width / 2, ~Height / 2)
+)
