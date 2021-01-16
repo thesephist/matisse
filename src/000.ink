@@ -250,6 +250,132 @@ pathfinder := () => (
 	), Center)
 )
 
+drizzle := () => (
+	Radius := 13
+	MinRadius := 1
+
+	sunlight? := coinflip()
+
+	each(range(0, 1000, 1), () => (
+		x := randRange(Radius, Width - Radius)
+		y := randRange(Radius, Height - Radius)
+		opacity := pow(y / Height, 1.4)
+
+		coinflip() :: {
+			true -> sunlight? :: {
+				true -> setFill(rgba(0, 0, 0, opacity))
+				_ -> setFill(rgba(
+					0.9 * pow(1 - y / Height, 0.5)
+					0.8 * pow(1 - y / Height, 0.5)
+					0.3 * pow(1 - y / Height, 0.5)
+					opacity
+				))
+			}
+			_ -> setFill(rgba(
+				0
+				0.8 * x / Width
+				y / Height
+				opacity
+			))
+		}
+		fillCircle(x, y, MinRadius + Radius * (1 - y / Height))
+	))
+)
+
+pentatone := () => (
+	Center := {
+		x: Width / 2
+		y: Height / 2
+	}
+	NRects := choose([16, 25, 50, 100, 200])
+	RectHeight := Height / 10
+
+	configs := [
+		[rgba(0, 0, 0, 1), Height / 13]
+		[rgba(0, 0, 0, 0.3), Height / 7]
+		[rgba(0, 0, 0, 0.1), Height / 2.5]
+	]
+
+	each(configs, config => (
+		color := config.0
+		YVariance := config.1
+
+		setFill(color)
+		reduce(range(0, NRects, 1), lastX => (
+			nextX := lastX + Width / NRects
+			yVariance := randRange(~YVariance, YVariance)
+
+			fillRect(
+				lastX
+				Center.y + yVariance - RectHeight / 2
+				Width / NRects
+				RectHeight
+			)
+
+			nextX
+		), 0)
+	))
+)
+
+petals := () => (
+	Center := {
+		x: Width / 2
+		y: Height / 2
+	}
+	NRects := choose([10, 16, 25])
+	AngleVariance := 0.2
+
+	setFill(rgba(rand(), rand(), rand(), 0.08))
+	each(range(0, NRects, 1), i => (
+		radius := (i / NRects) * (Width / 2)
+		drawFn := (coinflip() :: {true -> fillRect, _ -> strokeRect})
+
+		angle := randRange(~AngleVariance, AngleVariance)
+		rotateCanvas(angle)
+		drawFn(Center.x - radius, Center.y - radius, radius * 2, radius * 2)
+		rotateCanvas(~angle)
+	))
+)
+
+minesweeper := () => (
+	Center := {
+		x: Width / 2
+		y: Height / 2
+	}
+
+	N := choose([30, 50, 75])
+	Radius := Height / N / 2
+	setLineWidth(2)
+
+	each(range(0, Width, Width / N), x => (
+		each(range(0, Height, Height / N), y => (
+			center := {
+				x: x + Width / N / 2
+				y: y + Height / N / 2
+			}
+
+			xOffset := center.x - Center.x
+			yOffset := center.y - Center.y
+
+			xOffset * xOffset + yOffset * yOffset < Width * Height / 4 :: {
+				true -> (
+					opacity := (xOffset * xOffset + yOffset * yOffset) / (Width * Height / 4)
+
+					setFill(rgba(0, 0, 0, opacity))
+					setStroke(rgba(0, 0, 0, 1 - opacity))
+
+					coinflip() :: {
+						true -> coinflip() :: {
+							true -> fillRect(center.x - Radius, center.y - Radius, Radius * 2, Radius * 2)
+						}
+						_ -> strokeCircle(center.x, center.y, Radius)
+					}
+				)
+			}
+		))
+	))
+)
+
 options := [
 	rectGrid
 	diagonals
@@ -263,6 +389,10 @@ options := [
 	waves
 	planets
 	pathfinder
+	drizzle
+	pentatone
+	petals
+	minesweeper
 ]
 
 ` pick a random style and generate `
