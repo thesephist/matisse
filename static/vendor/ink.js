@@ -70,12 +70,21 @@ function time() {
 }
 
 function wait(duration, cb) {
-	setTimeout(cb, duration * 1000)
+	setTimeout(cb, duration * 1000);
 	return null;
 }
 
 function exec(path, args, stdin, stdoutFn) {
 	// TODO
+}
+
+function exit(code) {
+	if (__NODE) {
+		process.exit(code);
+	} else {
+		// TODO
+	}
+	return null;
 }
 
 function sin(n) {
@@ -181,7 +190,7 @@ function number(x) {
 }
 
 function point(c) {
-	c = __as_ink_string(c)
+	c = __as_ink_string(c);
 	return c.valueOf().charCodeAt(0);
 }
 
@@ -190,7 +199,7 @@ function char(n) {
 }
 
 function type(x) {
-	x = __as_ink_string(x)
+	x = __as_ink_string(x);
 	if (x === null) {
 		return '()';
 	} else if (typeof x === 'number') {
@@ -220,7 +229,7 @@ function len(x) {
 				return Object.getOwnPropertyNames(x).length;
 			}
 		default:
-			throw new Error('len() takes a string or composite value, but got ' + string(x))
+			throw new Error('len() takes a string or composite value, but got ' + string(x));
 	}
 }
 
@@ -232,7 +241,7 @@ function keys(x) {
 			return Object.getOwnPropertyNames(x);
 		}
 	}
-	throw new Error('keys() takes a composite value, but got ' + string(x).valueOf())
+	throw new Error('keys() takes a composite value, but got ' + string(x).valueOf());
 }
 
 /* Ink semantics polyfill */
@@ -249,8 +258,8 @@ function __ink_negate(x) {
 }
 
 function __ink_eq(a, b) {
-	a = __as_ink_string(a)
-	b = __as_ink_string(b)
+	a = __as_ink_string(a);
+	b = __as_ink_string(b);
 	if (a === __Ink_Empty || b === __Ink_Empty) {
 		return true;
 	}
@@ -292,6 +301,17 @@ function __ink_and(a, b) {
 		return a && b;
 	}
 
+	if (__is_ink_string(a) && __is_ink_string(b)) {
+		const max = Math.max(a.length, b.length);
+		const get = (s, i) => s.valueOf().charCodeAt(i) || 0;
+
+		let res = '';
+		for (let i = 0; i < max; i ++) {
+			res += String.fromCharCode(get(a, i) & get(b, i));
+		}
+		return res;
+	}
+
 	return a & b;
 }
 
@@ -300,12 +320,34 @@ function __ink_or(a, b) {
 		return a || b;
 	}
 
+	if (__is_ink_string(a) && __is_ink_string(b)) {
+		const max = Math.max(a.length, b.length);
+		const get = (s, i) => s.valueOf().charCodeAt(i) || 0;
+
+		let res = '';
+		for (let i = 0; i < max; i ++) {
+			res += String.fromCharCode(get(a, i) | get(b, i));
+		}
+		return res;
+	}
+
 	return a | b;
 }
 
 function __ink_xor(a, b) {
 	if (typeof a === 'boolean' && typeof b === 'boolean') {
 		return (a && !b) || (!a && b);
+	}
+
+	if (__is_ink_string(a) && __is_ink_string(b)) {
+		const max = Math.max(a.length, b.length);
+		const get = (s, i) => s.valueOf().charCodeAt(i) || 0;
+
+		let res = '';
+		for (let i = 0; i < max; i ++) {
+			res += String.fromCharCode(get(a, i) ^ get(b, i));
+		}
+		return res;
 	}
 
 	return a ^ b;
